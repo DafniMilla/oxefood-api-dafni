@@ -2,6 +2,7 @@ package br.com.ifpe.oxefood.modelo.produto;
 
 
 import org.hibernate.annotations.SQLRestriction;
+
 import br.com.ifpe.oxefood.util.entity.EntidadeAuditavel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -9,28 +9,39 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class ClienteService {
-    
-   @Autowired
-   private ClienteRepository repository;
 
-   @Transactional  //cria um bloco transacional no metódo
-   public Cliente save(Cliente cliente) {
+    @Transactional
+    public void update(Long id, Cliente clienteAlterado) {
 
-       cliente.setHabilitado(Boolean.TRUE);
-       return repository.save(cliente);
-   }
+        Cliente cliente = repository.findById(id).get();
+        cliente.setNome(clienteAlterado.getNome());
+        cliente.setDataNascimento(clienteAlterado.getDataNascimento());
+        cliente.setCpf(clienteAlterado.getCpf());
+        cliente.setFoneCelular(clienteAlterado.getFoneCelular());
+        cliente.setFoneFixo(clienteAlterado.getFoneFixo());
 
-   
+        repository.save(cliente);
+    }
+
+
+    @Autowired
+    private ClienteRepository repository;
+
+    @Transactional // cria um bloco transacional no metódo que roda todo o metódo e só no final confirma a alteração no banco
+    public Cliente save(Cliente cliente) {
+
+        cliente.setHabilitado(Boolean.TRUE);
+        return repository.save(cliente);
+    }
+
     public List<Cliente> listarTodos() {
-  
-        return repository.findAll(); //SELECT * FROM CLIENTE
+
+        return repository.findAll(); // SELECT * FROM CLIENTE
     }
 
     public Cliente obterPorID(Long id) {
 
-        return repository.findById(id).get();   //SELECT * FROM CLIENTE WHERE ID =?
+        return repository.findById(id).get(); // SELECT * FROM CLIENTE WHERE ID =?
     }
 
-    }
-
-
+}
