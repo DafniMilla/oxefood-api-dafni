@@ -23,11 +23,20 @@ public class ClienteService {
         repository.save(cliente);
     }
 
+   @Transactional
+   public void delete(Long id) {
+
+       Cliente cliente = repository.findById(id).get();
+       cliente.setHabilitado(Boolean.FALSE);
+
+       repository.save(cliente);
+   }
 
     @Autowired
     private ClienteRepository repository;
 
-    @Transactional // cria um bloco transacional no metódo que roda todo o metódo e só no final confirma a alteração no banco
+    @Transactional // cria um bloco transacional no metódo que roda todo o metódo e só no final
+                   // confirma a alteração no banco
     public Cliente save(Cliente cliente) {
 
         cliente.setHabilitado(Boolean.TRUE);
