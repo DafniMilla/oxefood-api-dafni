@@ -30,7 +30,7 @@ public class ProdutoController {
 
        Produto produto = request.build();
        produto.setCategoria(categoriaProdutoService.obterPorID(request.getIdCategoria()));
-       produtoService.update(id, produto);
+       ProdutoService.update(id, produto);
         return ResponseEntity.ok().build();
     }
 
@@ -54,7 +54,7 @@ public class ProdutoController {
 
       Produto produtoNovo = request.build();
        produtoNovo.setCategoria(categoriaProdutoService.obterPorID(request.getIdCategoria()));
-       Produto produto = produtoService.save(produtoNovo);
+       Produto produto = ProdutoService.save(produtoNovo);
        return new ResponseEntity<Produto>(produto, HttpStatus.CREATED);
 
     }
