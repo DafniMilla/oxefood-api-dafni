@@ -22,6 +22,8 @@ import br.com.ifpe.oxefood.modelo.cliente.ClienteService;
 @RequestMapping("/api/cliente")
 @CrossOrigin
 
+
+
 public class ClienteController {
 
 
