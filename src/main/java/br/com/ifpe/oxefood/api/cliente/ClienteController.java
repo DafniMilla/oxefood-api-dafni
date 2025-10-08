@@ -17,6 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ifpe.oxefood.modelo.cliente.Cliente;
 import br.com.ifpe.oxefood.modelo.cliente.ClienteService;
+import br.com.ifpe.oxefood.modelo.cliente.EnderecoCliente;
+import jakarta.validation.Valid;
+
+//comando pra rodar o docker
+//docker-compose up -d
+
 
 @RestController
 @RequestMapping("/api/cliente")
@@ -25,8 +31,36 @@ import br.com.ifpe.oxefood.modelo.cliente.ClienteService;
 
 
 public class ClienteController {
+//endpoinst para endereço do cliente
+//métodos para adicionar, alterar e remover endereço do cliente
+   @PostMapping("/endereco/{clienteId}")
+   public ResponseEntity<EnderecoCliente> adicionarEnderecoCliente(@PathVariable("clienteId") Long clienteId, @RequestBody @Valid EnderecoClienteRequest request) {
+
+       EnderecoCliente endereco = clienteService.adicionarEnderecoCliente(clienteId, request.build());
+       return new ResponseEntity<EnderecoCliente>(endereco, HttpStatus.CREATED);
+   }
+
+   @PutMapping("/endereco/{enderecoId}")
+   public ResponseEntity<EnderecoCliente> atualizarEnderecoCliente(@PathVariable("enderecoId") Long enderecoId, @RequestBody EnderecoClienteRequest request) {
+
+       EnderecoCliente endereco = clienteService.atualizarEnderecoCliente(enderecoId, request.build());
+       return new ResponseEntity<EnderecoCliente>(endereco, HttpStatus.OK);
+   }
+  
+   @DeleteMapping("/endereco/{enderecoId}")
+   public ResponseEntity<Void> removerEnderecoCliente(@PathVariable("enderecoId") Long enderecoId) {
+
+       clienteService.removerEnderecoCliente(enderecoId);
+       return ResponseEntity.noContent().build();
+   }
+
+//-------------------------------------------
 
 
+
+   //endpoinst para cliente
+
+   //atualiza com novos dados
     @PutMapping("/{id}")
     public ResponseEntity<Cliente> update(@PathVariable("id") Long id, @RequestBody ClienteRequest request) {
 
@@ -34,7 +68,7 @@ public class ClienteController {
         return ResponseEntity.ok().build();
     }
 
-    
+    //deletar cliente
      @DeleteMapping("/{id}")
    public ResponseEntity<Void> delete(@PathVariable Long id) {
 
@@ -46,6 +80,7 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
+    //adicionar
     @PostMapping
     public ResponseEntity<Cliente> save(@RequestBody ClienteRequest request) {
 
@@ -53,12 +88,12 @@ public class ClienteController {
         return new ResponseEntity<Cliente>(cliente, HttpStatus.CREATED);
 
     }
-
+//restorna todos como uma listar
     @GetMapping
     public List<Cliente> listarTodos() {
         return clienteService.listarTodos();
     }
-
+//obter por id
     @GetMapping("/{id}")
     public Cliente obterPorID(@PathVariable Long id) {
         return clienteService.obterPorID(id);

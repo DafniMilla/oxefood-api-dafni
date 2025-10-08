@@ -13,8 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 
 public class ProdutoRequest {
-       private Long idCategoria;
-
+    private Long idCategoria;
     private String codigo;
     private String titulo;
     private String descricao;

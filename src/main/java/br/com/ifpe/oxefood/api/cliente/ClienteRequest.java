@@ -10,13 +10,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+//anotações lombok
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 
 public class ClienteRequest {
-
+//campos da classe
    private String nome;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
