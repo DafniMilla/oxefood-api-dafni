@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoriaProdutoRequest {
-
+//Campos que o cliente vai enviar para cadastrar/atualizar uma categoria.
     private String descricao;
     private String nome;
 

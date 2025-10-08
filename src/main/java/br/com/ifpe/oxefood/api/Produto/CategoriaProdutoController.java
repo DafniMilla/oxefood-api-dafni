@@ -21,7 +21,7 @@ import br.com.ifpe.oxefood.modelo.produto.CategoriaProdutoService;
 
 
 @RestController
-@RequestMapping("/api/categoriaProduto") 
+@RequestMapping("/api/categoriaProduto") //endpoint pra testar no postman
 @CrossOrigin
 public class CategoriaProdutoController {
     

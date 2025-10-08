@@ -19,9 +19,9 @@ public class ClienteService {
     @Autowired
     private EnderecoClienteRepository enderecoClienteRepository;
 
+    //adiciona um endereço a um cliente existente
     @Transactional
     public EnderecoCliente adicionarEnderecoCliente(Long clienteId, EnderecoCliente endereco) {
-
         Cliente cliente = this.obterPorID(clienteId);
 
         endereco.setCliente(cliente);
@@ -41,6 +41,8 @@ public class ClienteService {
         return endereco;
     }
 
+    //---------
+    //atualiza endereço cliente com base no id
     @Transactional
     public EnderecoCliente atualizarEnderecoCliente(Long id, EnderecoCliente enderecoAlterado) {
 
@@ -55,6 +57,8 @@ public class ClienteService {
 
         return enderecoClienteRepository.save(endereco);
     }
+//------------------
+//remove um endereço cliente 
 
     @Transactional
     public void removerEnderecoCliente(Long idEndereco) {
@@ -68,6 +72,7 @@ public class ClienteService {
         repository.save(cliente);
     }
 
+    //atualiza os dados do cliente com base no id
     @Transactional
     public void update(Long id, Cliente clienteAlterado) {
 
@@ -80,7 +85,8 @@ public class ClienteService {
 
         repository.save(cliente);
     }
-
+//--------
+//Marca o cliente como não habilitado (soft delete), sem apagar do banco.
     @Transactional
     public void delete(Long id) {
 
@@ -89,16 +95,19 @@ public class ClienteService {
         repository.save(cliente);
     }
 
+    //salva um novo cliente no banco de dados
     @Transactional
     public Cliente save(Cliente cliente) {
         cliente.setHabilitado(Boolean.TRUE);
         return repository.save(cliente);
     }
-
+//------
+//retorna todos os clientes do banco de dados
     public List<Cliente> listarTodos() {
         return repository.findAll();
     }
-
+//-------
+//busca cliente por id
     public Cliente obterPorID(Long id) {
         return repository.findById(id).get();
     }

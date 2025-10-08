@@ -16,20 +16,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+//anotaçoes de classe
 @Entity
 @Table(name = "Cliente")
 @SQLRestriction("habilitado = true")
 
+
+//anotaçoes lombok
 @Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+//-----
 public class Cliente extends EntidadeAuditavel  {
     
+
+   //um cliente pode ter vários endereços
    @OneToMany(mappedBy = "cliente", orphanRemoval = true, fetch = FetchType.EAGER)
    private List<EnderecoCliente> enderecos;
 
+   //campos que será mapeado para uma coluna da tabela cliente
    @Column
    private String nome;
 

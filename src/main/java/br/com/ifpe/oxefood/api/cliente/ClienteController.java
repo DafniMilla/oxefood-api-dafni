@@ -20,12 +20,14 @@ import br.com.ifpe.oxefood.modelo.cliente.ClienteService;
 import br.com.ifpe.oxefood.modelo.cliente.EnderecoCliente;
 import jakarta.validation.Valid;
 
-//comando pra rodar o docker
+
+//endpoints REST que o frontend vai chamar.
+//comando pra rodar o docker:
 //docker-compose up -d
 
 
 @RestController
-@RequestMapping("/api/cliente")
+@RequestMapping("/api/cliente") //endpoint pra testar no postman
 @CrossOrigin
 
 
@@ -58,7 +60,7 @@ public class ClienteController {
 
 
 
-   //endpoinst para cliente
+   //endpoint para cliente
 
    //atualiza com novos dados
     @PutMapping("/{id}")
