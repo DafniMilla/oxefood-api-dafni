@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.hibernate.annotations.SQLRestriction;
+
 import br.com.ifpe.oxefood.util.entity.EntidadeAuditavel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,13 +38,13 @@ public class Cliente extends EntidadeAuditavel  {
    private List<EnderecoCliente> enderecos;
 
    //campos que será mapeado para uma coluna da tabela cliente
-   @Column
+   @Column (nullable = false, length = 100)
    private String nome;
 
    @Column
    private LocalDate dataNascimento;
 
-   @Column
+   @Column (unique = true)
    private String cpf;
 
    @Column

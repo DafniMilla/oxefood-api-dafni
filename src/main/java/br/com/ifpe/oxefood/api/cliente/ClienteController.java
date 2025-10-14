@@ -83,14 +83,15 @@ public class ClienteController {
     private ClienteService clienteService;
 
     //adicionar
+    //@valid serve pra ativar as validações
     @PostMapping
-    public ResponseEntity<Cliente> save(@RequestBody ClienteRequest request) {
+    public ResponseEntity<Cliente> save(@RequestBody @Valid  ClienteRequest request) {
 
         Cliente cliente = clienteService.save(request.build());
         return new ResponseEntity<Cliente>(cliente, HttpStatus.CREATED);
 
     }
-//restorna todos como uma listar
+//retorna todos como uma listar
     @GetMapping
     public List<Cliente> listarTodos() {
         return clienteService.listarTodos();
