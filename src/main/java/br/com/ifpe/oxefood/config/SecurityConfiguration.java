@@ -1,4 +1,4 @@
-ackage br.com.ifpe.oxefood.config;
+package br.com.ifpe.oxefood.config;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,12 +37,15 @@ public class SecurityConfiguration {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(c -> c.disable())
             .authorizeHttpRequests(authorize -> authorize
-//rotas acessiveis sem tá logado
+
                 .requestMatchers(HttpMethod.POST, "/api/cliente").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth").permitAll()
-              //  .requestMatchers(HttpMethod.GET, "/api/produto").permitAll() //CONSULTA PRODUTO SEM TÁ LOGADO
-//---------------------
-//  "*" LIBERA ROTA
+                /*
+                .requestMatchers(HttpMethod.GET, "/api/produto").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/produto/*").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/api/produto/*").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/entregador").permitAll()
+                */
                 .requestMatchers(HttpMethod.GET, "/api-docs/*").permitAll()
                 .requestMatchers(HttpMethod.GET, "/swagger-ui/*").permitAll()
 
@@ -62,7 +65,7 @@ public class SecurityConfiguration {
 
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000")); //porta da requisição do front
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);

@@ -1,6 +1,8 @@
 package br.com.ifpe.oxefood.modelo.acesso;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,8 +28,9 @@ public class UsuarioService implements UserDetailsService {
         this.repository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
     
+    public Usuario authenticate(String username, String password) {
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(username, password));
 
