@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.ifpe.oxefood.modelo.acesso.Perfil;
 import br.com.ifpe.oxefood.modelo.acesso.PerfilRepository;
+import br.com.ifpe.oxefood.modelo.acesso.Usuario;
 import br.com.ifpe.oxefood.modelo.acesso.UsuarioService;
 import jakarta.transaction.Transactional;
 
@@ -20,30 +21,92 @@ public class ClienteService {
     @Autowired
     private EnderecoClienteRepository enderecoClienteRepository;
 
-    // adiciona um endereço a um cliente existente
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private PerfilRepository perfilUsuarioRepository;
+
+    @Transactional
+    public Cliente save(Cliente cliente, Usuario usuarioLogado) {
+
+        usuarioService.save(cliente.getUsuario());
+
+        for (Perfil perfil : cliente.getUsuario().getRoles()) {
+            perfil.setHabilitado(Boolean.TRUE);
+            perfilUsuarioRepository.save(perfil);
+        }
+
+        cliente.setHabilitado(Boolean.TRUE);
+        cliente.setCriadoPor(usuarioLogado);
+        Cliente c = repository.save(cliente);
+
+        return c;
+    }
+
+    public List<Cliente> listarTodos() {
+  
+        return repository.findAll(); //SELECT * FROM Cliente
+    }
+
+    public Cliente obterPorID(Long id) {
+
+        return repository.findById(id).get(); //SELECT * FROM Cliente WHERE id = ?
+    }
+
+    @Transactional
+    public void update(Long id, Cliente clienteAlterado, Usuario usuarioLogado) {
+
+ 
+
+        Cliente cliente = repository.findById(id).get();
+        cliente.setNome(clienteAlterado.getNome());
+        cliente.setDataNascimento(clienteAlterado.getDataNascimento());
+        cliente.setCpf(clienteAlterado.getCpf());
+        cliente.setFoneCelular(clienteAlterado.getFoneCelular());
+        cliente.setFoneFixo(clienteAlterado.getFoneFixo());
+
+         cliente.setUltimaModificacaoPor(usuarioLogado);
+
+            
+        repository.save(cliente);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+
+        Cliente cliente = repository.findById(id).get();
+        cliente.setHabilitado(Boolean.FALSE);
+
+        repository.save(cliente);
+    }
+
     @Transactional
     public EnderecoCliente adicionarEnderecoCliente(Long clienteId, EnderecoCliente endereco) {
+
         Cliente cliente = this.obterPorID(clienteId);
+        
+        //Primeiro salva o EnderecoCliente:
 
         endereco.setCliente(cliente);
         endereco.setHabilitado(Boolean.TRUE);
         enderecoClienteRepository.save(endereco);
+        
+        //Depois acrescenta o endereço criado ao cliente e atualiza o cliente:
 
         List<EnderecoCliente> listaEnderecoCliente = cliente.getEnderecos();
-
+        
         if (listaEnderecoCliente == null) {
-            listaEnderecoCliente = new ArrayList<>();
+            listaEnderecoCliente = new ArrayList<EnderecoCliente>();
         }
-
+        
         listaEnderecoCliente.add(endereco);
         cliente.setEnderecos(listaEnderecoCliente);
         repository.save(cliente);
-
+        
         return endereco;
     }
 
-    // ---------
-    // atualiza endereço cliente com base no id
     @Transactional
     public EnderecoCliente atualizarEnderecoCliente(Long id, EnderecoCliente enderecoAlterado) {
 
@@ -58,8 +121,6 @@ public class ClienteService {
 
         return enderecoClienteRepository.save(endereco);
     }
-    // ------------------
-    // remove um endereço cliente
 
     @Transactional
     public void removerEnderecoCliente(Long idEndereco) {
@@ -72,62 +133,5 @@ public class ClienteService {
         cliente.getEnderecos().remove(endereco);
         repository.save(cliente);
     }
-
-    // atualiza os dados do cliente com base no id
-    @Transactional
-    public void update(Long id, Cliente clienteAlterado) {
-
-        Cliente cliente = repository.findById(id).get();
-        cliente.setNome(clienteAlterado.getNome());
-        cliente.setDataNascimento(clienteAlterado.getDataNascimento());
-        cliente.setCpf(clienteAlterado.getCpf());
-        cliente.setFoneCelular(clienteAlterado.getFoneCelular());
-        cliente.setFoneFixo(clienteAlterado.getFoneFixo());
-
-        repository.save(cliente);
-    }
-
-    // --------
-    // Marca o cliente como não habilitado (soft delete), sem apagar do banco.
-    @Transactional
-    public void delete(Long id) {
-
-        Cliente cliente = repository.findById(id).get();
-        cliente.setHabilitado(Boolean.FALSE);
-        repository.save(cliente);
-    }
-
-    @Autowired
-    private UsuarioService usuarioService;
-
-    @Autowired
-    private PerfilRepository perfilUsuarioRepository;
-
-    // salva um novo cliente no banco de dados
-    @Transactional
-    public Cliente save(Cliente cliente) {
-
-        usuarioService.save(cliente.getUsuario());
-
-        for (Perfil perfil : cliente.getUsuario().getRoles()) {
-            perfil.setHabilitado(Boolean.TRUE);
-            perfilUsuarioRepository.save(perfil);
-        }
-        
-        
-        cliente.setHabilitado(Boolean.TRUE);
-        return repository.save(cliente);
-    }
-
-    // ------
-    // retorna todos os clientes do banco de dados
-    public List<Cliente> listarTodos() {
-        return repository.findAll();
-    }
-
-    // -------
-    // busca cliente por id
-    public Cliente obterPorID(Long id) {
-        return repository.findById(id).get();
-    }
+    
 }

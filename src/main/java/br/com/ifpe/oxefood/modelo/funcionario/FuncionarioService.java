@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.ifpe.oxefood.modelo.acesso.Perfil;
+import br.com.ifpe.oxefood.modelo.acesso.PerfilRepository;
 import br.com.ifpe.oxefood.modelo.acesso.UsuarioService;
 import jakarta.transaction.Transactional;
 
@@ -14,8 +16,24 @@ public class FuncionarioService {
     @Autowired
     private FuncionarioRepository repository;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private PerfilRepository perfilUsuarioRepository;
+
+
+
     @Transactional
     public Funcionario save(Funcionario funcionario) {
+
+         usuarioService.save(funcionario.getUsuario());
+
+       for (Perfil perfil : funcionario.getUsuario().getRoles()) {
+           perfil.setHabilitado(Boolean.TRUE);
+           perfilUsuarioRepository.save(perfil);
+       }
+
 
         funcionario.setHabilitado(Boolean.TRUE);
         return repository.save(funcionario);
