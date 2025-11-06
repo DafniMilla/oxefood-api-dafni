@@ -11,6 +11,8 @@ import jakarta.transaction.Transactional;
 
 @Service 
 public class ProdutoService { 
+
+    
     @Autowired
     private ProdutoRepository repository;
 
@@ -61,6 +63,39 @@ public class ProdutoService {
 
        repository.save(produto);
    }
+
+
+
+
+
+
+   public List<Produto> filtrar(String codigo, String titulo, Long idCategoria) {
+
+       List<Produto> listaProdutos = repository.findAll();
+
+       if ((codigo != null && !"".equals(codigo)) &&
+           (titulo == null || "".equals(titulo)) &&
+           (idCategoria == null)) {
+               listaProdutos = repository.consultarPorCodigo(codigo);
+       } else if (
+           (codigo == null || "".equals(codigo)) &&
+           (titulo != null && !"".equals(titulo)) &&
+           (idCategoria == null)) {    
+               listaProdutos = repository.findByTituloContainingIgnoreCaseOrderByTituloAsc(titulo);
+       } else if (
+           (codigo == null || "".equals(codigo)) &&
+           (titulo == null || "".equals(titulo)) &&
+           (idCategoria != null)) {
+               listaProdutos = repository.consultarPorCategoria(idCategoria); 
+       } else if (
+           (codigo == null || "".equals(codigo)) &&
+           (titulo != null && !"".equals(titulo)) &&
+           (idCategoria != null)) {
+               listaProdutos = repository.consultarPorTituloECategoria(titulo, idCategoria); 
+       }
+
+       return listaProdutos;
+}
 
 
 }

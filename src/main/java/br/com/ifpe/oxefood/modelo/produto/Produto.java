@@ -38,7 +38,7 @@ public class Produto extends EntidadeAuditavel {
     @Column
     private String descricao;
 
-    @Column
+    @Column(name="vl_unit")
     private Double valorUnitario;
 
     @Column
