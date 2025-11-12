@@ -22,9 +22,18 @@ import br.com.ifpe.oxefood.modelo.cliente.EnderecoCliente;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
+import io.swagger.v3.oas.annotations.Operation;
+
+
 @RestController
 @RequestMapping("/api/cliente")
 @CrossOrigin
+
+@Tag(
+    name = "API Cliente",
+    description = "API responsável pelos servidos de cliente no sistema"
+)
+
 public class ClienteController {
      @Autowired
     private UsuarioService usuarioService;
@@ -32,6 +41,13 @@ public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
+
+
+    @Operation(
+       summary = "Serviço responsável por salvar um cliente no sistema.",
+       description = "Exemplo de descrição de um endpoint responsável por inserir um cliente no sistema."
+   )
+
 
     @PostMapping
     public ResponseEntity<Cliente> save(@RequestBody @Valid ClienteRequest request, HttpServletRequest request) {
