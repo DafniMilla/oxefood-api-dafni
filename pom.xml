@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.ifpe</groupId>
-	<artifactId>oxefood-api-dafni</artifactId>
+	<artifactId>oxefood-api-ads252</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>oxefood-api-dafni</name>
+	<name>oxefood-api-ads252</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -42,34 +42,28 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-hateoas</artifactId>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-		
-	<dependency>
-		<groupId>io.jsonwebtoken</groupId>
-		<artifactId>jjwt-api</artifactId>
-		<version>0.11.5</version>
-	</dependency>
 
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.11.5</version>
+		</dependency>
 
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.11.5</version>
+		</dependency>
 
-<dependency>
-<groupId>io.jsonwebtoken</groupId>
-	<artifactId>jjwt-impl</artifactId>
-	<version>0.11.5</version>
-</dependency>
-
-
-<dependency>
-<groupId>io.jsonwebtoken</groupId>
-<artifactId>jjwt-jackson</artifactId>
-<version>0.11.5</version>
-</dependency>
-
-
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.11.5</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -119,10 +113,11 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
-                   <groupId>org.apache.commons</groupId>
-                   <artifactId>commons-lang3</artifactId>
-          </dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
 
 	</dependencies>
 
@@ -174,5 +169,17 @@
 			</releases>
 		</pluginRepository>
 	</pluginRepositories>
+
+	<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-mail</artifactId>
+</dependency>
+
+<dependency>
+	<groupId>ognl</groupId>
+	<artifactId>ognl</artifactId>
+	<version>3.3.4</version> 
+</dependency>
+
 
 </project>

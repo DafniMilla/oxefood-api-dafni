@@ -1,5 +1,6 @@
 package br.com.ifpe.oxefood.modelo.cliente;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +11,30 @@ import br.com.ifpe.oxefood.modelo.acesso.Perfil;
 import br.com.ifpe.oxefood.modelo.acesso.PerfilRepository;
 import br.com.ifpe.oxefood.modelo.acesso.Usuario;
 import br.com.ifpe.oxefood.modelo.acesso.UsuarioService;
+import br.com.ifpe.oxefood.modelo.mensagens.EmailService;
 import jakarta.transaction.Transactional;
 
 @Service
 public class ClienteService {
+
+    @Autowired
+    private EmailService emailService;
+
+    
+    @Transactional
+   public Cliente save(Cliente cliente) {
+
+       cliente.setHabilitado(Boolean.TRUE);
+       cliente.setVersao(1L);
+       cliente.setDataCriacao(LocalDate.now());
+       Cliente clienteSalvo = repository.save(cliente);
+
+       emailService.enviarEmailConfirmacaoCadastroCliente(clienteSalvo);
+
+       return clienteSalvo;
+   }
+
+
 
     @Autowired
     private ClienteRepository repository;
@@ -35,12 +56,14 @@ public class ClienteService {
         for (Perfil perfil : cliente.getUsuario().getRoles()) {
             perfil.setHabilitado(Boolean.TRUE);
             perfilUsuarioRepository.save(perfil);
+              
         }
 
         cliente.setHabilitado(Boolean.TRUE);
         cliente.setCriadoPor(usuarioLogado);
         Cliente c = repository.save(cliente);
 
+         
         return c;
     }
 
@@ -68,7 +91,6 @@ public class ClienteService {
 
          cliente.setUltimaModificacaoPor(usuarioLogado);
 
-            
         repository.save(cliente);
     }
 
