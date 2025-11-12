@@ -22,8 +22,6 @@ import br.com.ifpe.oxefood.modelo.cliente.EnderecoCliente;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
-import io.swagger.v3.oas.annotations.Operation;
-
 
 @RestController
 @RequestMapping("/api/cliente")
@@ -43,17 +41,17 @@ public class ClienteController {
     private ClienteService clienteService;
 
 
-    @Operation(
+    Operations(
        summary = "Serviço responsável por salvar um cliente no sistema.",
        description = "Exemplo de descrição de um endpoint responsável por inserir um cliente no sistema."
    )
 
 
     @PostMapping
-    public ResponseEntity<Cliente> save(@RequestBody @Valid ClienteRequest request, HttpServletRequest request) {
+    public ResponseEntity<Cliente> save(@RequestBody @Valid ClienteRequest request, HttpServletRequest req) {
  
 
-        Cliente cliente = clienteService.save(request.build(), usuarioService.obterUsuarioLogado(request));
+        Cliente cliente = clienteService.save(request.build(), usuarioService.obterUsuarioLogado(req));
         return new ResponseEntity<Cliente>(cliente, HttpStatus.CREATED);
     }
 
@@ -71,9 +69,9 @@ public class ClienteController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Cliente> update(@PathVariable("id") Long id, 
-            @RequestBody @Valid ClienteRequest request , HttpServletRequest request) {
+            @RequestBody @Valid ClienteRequest request , HttpServletRequest req) {
 
-        clienteService.update(id, request.build(), usuarioService.obterUsuarioLogado(request));
+        clienteService.update(id, request.build(), usuarioService.obterUsuarioLogado(req));
         return ResponseEntity.ok().build();
     }
 

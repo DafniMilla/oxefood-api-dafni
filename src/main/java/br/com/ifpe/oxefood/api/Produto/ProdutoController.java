@@ -15,23 +15,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.com.ifpe.oxefood.modelo.produto.CategoriaProdutoService;
 import br.com.ifpe.oxefood.modelo.produto.Produto;
 import br.com.ifpe.oxefood.modelo.produto.ProdutoService;
+
 @RestController
 @RequestMapping("/api/produto")
 @CrossOrigin
 
 public class ProdutoController {
+
+    @PostMapping("/{id}")
+    public ResponseEntity<Produto> saveImage(@PathVariable Long id,
+            @RequestParam(value = "imagem", required = true) MultipartFile imagem) {
+
+        Produto produto = ProdutoService.saveImage(id, imagem);
+        return new ResponseEntity<Produto>(produto, HttpStatus.CREATED);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Produto> update(@PathVariable("id") Long id, @RequestBody ProdutoRequest request) {
 
-        
-
-       Produto produto = request.build();
-       produto.setCategoria(categoriaProdutoService.obterPorID(request.getIdCategoria()));
-       ProdutoService.update(id, produto);
+        Produto produto = request.build();
+        produto.setCategoria(categoriaProdutoService.obterPorID(request.getIdCategoria()));
+        ProdutoService.update(id, produto);
         return ResponseEntity.ok().build();
     }
 
@@ -45,18 +54,16 @@ public class ProdutoController {
     @Autowired
     private ProdutoService ProdutoService;
 
-@Autowired
-   private CategoriaProdutoService categoriaProdutoService;
-
- 
+    @Autowired
+    private CategoriaProdutoService categoriaProdutoService;
 
     @PostMapping
     public ResponseEntity<Produto> save(@RequestBody ProdutoRequest request) {
 
-      Produto produtoNovo = request.build();
-       produtoNovo.setCategoria(categoriaProdutoService.obterPorID(request.getIdCategoria()));
-       Produto produto = ProdutoService.save(produtoNovo);
-       return new ResponseEntity<Produto>(produto, HttpStatus.CREATED);
+        Produto produtoNovo = request.build();
+        produtoNovo.setCategoria(categoriaProdutoService.obterPorID(request.getIdCategoria()));
+        Produto produto = ProdutoService.save(produtoNovo);
+        return new ResponseEntity<Produto>(produto, HttpStatus.CREATED);
 
     }
 
@@ -70,15 +77,13 @@ public class ProdutoController {
         return ProdutoService.obterPorID(id);
     }
 
-    
-  @PostMapping("/filtrar")
-   public List<Produto> filtrar(
-           @RequestParam(value = "codigo", required = false) String codigo,
-           @RequestParam(value = "titulo", required = false) String titulo,
-           @RequestParam(value = "idCategoria", required = false) Long idCategoria) {
+    @PostMapping("/filtrar")
+    public List<Produto> filtrar(
+            @RequestParam(value = "codigo", required = false) String codigo,
+            @RequestParam(value = "titulo", required = false) String titulo,
+            @RequestParam(value = "idCategoria", required = false) Long idCategoria) {
 
-       return ProdutoService.filtrar(codigo, titulo, idCategoria);
-   }
-
+        return ProdutoService.filtrar(codigo, titulo, idCategoria);
+    }
 
 }

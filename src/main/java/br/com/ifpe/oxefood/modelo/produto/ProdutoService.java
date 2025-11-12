@@ -4,34 +4,46 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import br.com.ifpe.oxefood.util.Util;
 import br.com.ifpe.oxefood.util.exception.ProdutoException;
 import jakarta.transaction.Transactional;
 
-
-@Service 
-public class ProdutoService { 
-
+@Service
+public class ProdutoService {
     
+  //salvar imagem 
+    @Transactional
+    public Produto saveImage(Long id, MultipartFile imagem) {
+
+        Produto produto = obterPorID(id);
+
+        String imagemUpada = Util.fazerUploadImagem(imagem);
+
+        if (imagemUpada != null) {
+            produto.setImagem(imagemUpada);
+        }
+
+        return save(produto);
+    }
+
     @Autowired
     private ProdutoRepository repository;
 
     @Transactional
-    public Produto save(Produto produto){
-        //regra de negócio de  produto
+    public Produto save(Produto produto) {
+        // regra de negócio de produto
         if (produto.getValorUnitario() < 10) {
-	    throw new ProdutoException(ProdutoException.MSG_VALOR_MINIMO_PRODUTO);
-	}
+            throw new ProdutoException(ProdutoException.MSG_VALOR_MINIMO_PRODUTO);
+        }
 
-
-
-        
         produto.setHabilitado(Boolean.TRUE);
         return repository.save(produto);
     }
 
     public List<Produto> listarTodos() {
-  
+
         return repository.findAll();// select * from cliente
     }
 
@@ -40,62 +52,53 @@ public class ProdutoService {
         return repository.findById(id).get(); // select * from cliente wher id =?
     }
 
-    @Transactional // confirma as alteração no final do banco 
-   public void update(Long id, Produto produtoAlterado) {
+    @Transactional // confirma as alteração no final do banco
+    public void update(Long id, Produto produtoAlterado) {
 
-      Produto produto = repository.findById(id).get();
-       produto.setCategoria(produtoAlterado.getCategoria());
-      produto.setTitulo(produtoAlterado.getTitulo());
-      produto.setDescricao(produtoAlterado.getDescricao());
-      produto.setValorUnitario(produtoAlterado.getValorUnitario());
-      produto.setCodigo(produtoAlterado.getCodigo());
-      produto.setTempoEntregaMinimo(produtoAlterado.getTempoEntregaMinimo());
-      produto.setTempoEntregaMaximo(produtoAlterado.getTempoEntregaMaximo());
-	    
-      repository.save(produto);
-  }
+        Produto produto = repository.findById(id).get();
+        produto.setCategoria(produtoAlterado.getCategoria());
+        produto.setTitulo(produtoAlterado.getTitulo());
+        produto.setDescricao(produtoAlterado.getDescricao());
+        produto.setValorUnitario(produtoAlterado.getValorUnitario());
+        produto.setCodigo(produtoAlterado.getCodigo());
+        produto.setTempoEntregaMinimo(produtoAlterado.getTempoEntregaMinimo());
+        produto.setTempoEntregaMaximo(produtoAlterado.getTempoEntregaMaximo());
 
-  @Transactional
-   public void delete(Long id) {
+        repository.save(produto);
+    }
 
-       Produto produto = repository.findById(id).get();
-       produto.setHabilitado(Boolean.FALSE);
+    @Transactional
+    public void delete(Long id) {
 
-       repository.save(produto);
-   }
+        Produto produto = repository.findById(id).get();
+        produto.setHabilitado(Boolean.FALSE);
 
+        repository.save(produto);
+    }
 
+    public List<Produto> filtrar(String codigo, String titulo, Long idCategoria) {
 
+        List<Produto> listaProdutos = repository.findAll();
 
+        if ((codigo != null && !"".equals(codigo)) &&
+                (titulo == null || "".equals(titulo)) &&
+                (idCategoria == null)) {
+            listaProdutos = repository.consultarPorCodigo(codigo);
+        } else if ((codigo == null || "".equals(codigo)) &&
+                (titulo != null && !"".equals(titulo)) &&
+                (idCategoria == null)) {
+            listaProdutos = repository.findByTituloContainingIgnoreCaseOrderByTituloAsc(titulo);
+        } else if ((codigo == null || "".equals(codigo)) &&
+                (titulo == null || "".equals(titulo)) &&
+                (idCategoria != null)) {
+            listaProdutos = repository.consultarPorCategoria(idCategoria);
+        } else if ((codigo == null || "".equals(codigo)) &&
+                (titulo != null && !"".equals(titulo)) &&
+                (idCategoria != null)) {
+            listaProdutos = repository.consultarPorTituloECategoria(titulo, idCategoria);
+        }
 
-
-   public List<Produto> filtrar(String codigo, String titulo, Long idCategoria) {
-
-       List<Produto> listaProdutos = repository.findAll();
-
-       if ((codigo != null && !"".equals(codigo)) &&
-           (titulo == null || "".equals(titulo)) &&
-           (idCategoria == null)) {
-               listaProdutos = repository.consultarPorCodigo(codigo);
-       } else if (
-           (codigo == null || "".equals(codigo)) &&
-           (titulo != null && !"".equals(titulo)) &&
-           (idCategoria == null)) {    
-               listaProdutos = repository.findByTituloContainingIgnoreCaseOrderByTituloAsc(titulo);
-       } else if (
-           (codigo == null || "".equals(codigo)) &&
-           (titulo == null || "".equals(titulo)) &&
-           (idCategoria != null)) {
-               listaProdutos = repository.consultarPorCategoria(idCategoria); 
-       } else if (
-           (codigo == null || "".equals(codigo)) &&
-           (titulo != null && !"".equals(titulo)) &&
-           (idCategoria != null)) {
-               listaProdutos = repository.consultarPorTituloECategoria(titulo, idCategoria); 
-       }
-
-       return listaProdutos;
-}
-
+        return listaProdutos;
+    }
 
 }

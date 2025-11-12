@@ -26,6 +26,7 @@ public class FuncionarioRequest {
     @Enumerated(EnumType.STRING)
     private TipoFuncionario tipo;
 
+    
     @NotBlank
     private String email;
 
@@ -66,7 +67,6 @@ public class FuncionarioRequest {
 
         return Funcionario.builder()
                 .usuario(buildUsuario())
-
                 .tipo(tipo)
                 .nome(nome)
                 .cpf(cpf)

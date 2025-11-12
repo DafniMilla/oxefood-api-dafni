@@ -25,7 +25,6 @@ import lombok.Setter;
 
 public class Produto extends EntidadeAuditavel {
 
-     
     @ManyToOne
     private CategoriaProduto categoria;
 
@@ -38,7 +37,7 @@ public class Produto extends EntidadeAuditavel {
     @Column
     private String descricao;
 
-    @Column(name="vl_unit")
+    @Column(name = "vl_unit")
     private Double valorUnitario;
 
     @Column
@@ -46,5 +45,8 @@ public class Produto extends EntidadeAuditavel {
 
     @Column
     private Integer tempoEntregaMaximo;
+
+    @Column
+    private String imagem;
 
 }

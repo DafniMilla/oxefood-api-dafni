@@ -3,8 +3,10 @@ package br.com.ifpe.oxefood.modelo.mensagens;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
+import javax.management.monitor.MonitorSettingException;
+import javax.sound.midi.MidiMessage;
+
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -21,6 +23,7 @@ import jakarta.mail.internet.MimeMessage;
 
 /**
  * @author Roberto Alencar
+ * @param <JavaMailSender>
  */
 @Component
 public class EmailService {
@@ -75,13 +78,14 @@ public class EmailService {
         String content = templateEngine.process(template, params);
         this.sendMail(to, subject, content, Boolean.TRUE);
     }
+    
 
     @Async
     private void sendMail(String to, String subject, String content, Boolean html) {
 
         emailSender = getJavaMailSender();
 
-        MimeMessage message = emailSender.createMimeMessage();
+        MidiMessage message = emailSender.createMimeMessage();
 
 
          MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -94,7 +98,7 @@ public class EmailService {
             helper.setText(new String(content.getBytes(), StandardCharsets.ISO_8859_1), html);
             helper.setEncodeFilenames(true);
 
-        } catch (MessagingException e) {
+        } catch (MonitorSettingException e) {
             e.printStackTrace();
         }
 
