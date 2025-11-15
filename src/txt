@@ -1,0 +1,23 @@
+//Principais Anotações do Spring Validation
+
+//@NotNull : O campo não pode ser nulo. Aceita string vazia "", mas não aceita null
+
+//@NotBlank: O campo não pode ser nulo, nem vazio, nem só espaços. Usada principalmente em String.
+
+//@NotEmpty: Não pode ser null e não pode estar vazio. Aceita espaços em branco. Usada em Strings, listas, arrays.
+
+//@Size(min, max) Define tamanho mínimo e máximo. @Size(min = 3, max = 20) private String senha;
+
+//@Email : Verifica se é um e-mail válido.
+
+//@Min e @Max : Limites numéricos. @Min(18) @Max(60) private int idade;
+
+//======================
+
+// exemplo de converter data: private LocalDateTime dataEntradaSistema;
+
+//==============
+
+// A nomenclatura do Spring Data JPA segue o formato:
+// findBy + Campo(s) + Operadores + OrderBy
+// Com base no nome do método, o Spring cria automaticamente a consulta.

@@ -19,7 +19,7 @@ import jakarta.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
-
+//Anotações principais da classe
 @Getter
 @Setter
 @MappedSuperclass
@@ -30,19 +30,25 @@ public abstract class EntidadeAuditavel extends EntidadeNegocio {
    @Version
    private Long versao;
 
+
+//    @CreatedDate → preenchido automaticamente com a data de criação do registro.
+// @JsonIgnore → não será enviado no JSON da API.
+
    @JsonIgnore
    @CreatedDate
    private LocalDate dataCriacao;
 
    @JsonIgnore
-   @LastModifiedDate
+   @LastModifiedDate //3️ Data da última modificação
    private LocalDate dataUltimaModificacao;
 
-    @CreatedBy
-    @ManyToOne
-    @JoinColumn
+    @CreatedBy //o Spring preenche automaticamente com o usuário que criou o registro.
+    @ManyToOne //relacionamento com a entidade Usuario.
+    @JoinColumn //cria a chave estrangeira no banco.
     private Usuario criadoPor;
 
+
+    //Usuário que modificou por último
     @LastModifiedBy
     @ManyToOne
     @JoinColumn
@@ -50,3 +56,15 @@ public abstract class EntidadeAuditavel extends EntidadeNegocio {
 
 
 }
+
+
+
+// O que é EntidadeAuditavel?
+// É uma classe base abstrata (abstract) para entidades do sistema que precisam auditoria automática.
+// Toda entidade que estender essa classe herda campos e comportamento de auditoria.
+// Permite controlar:
+// Quem criou o registro
+// Quando foi criado
+// Quem modificou
+// Quando foi modificado
+// Controle de versão (@Version)

@@ -13,18 +13,19 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+//Anotações da classe
+@Getter //do lombok 
+@Setter //lombok
 @EqualsAndHashCode(of = { "id" })
-@MappedSuperclass
+@MappedSuperclass //indica que não cria uma tabela separada, mas as classes que herdarem dela terão os campos no banco.
 public abstract class EntidadeNegocio implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE) //o banco gera automaticamente o valor sequencial do id.
     private Long id;
 
     @JsonIgnore
     @Column
-    private Boolean habilitado;
+    private Boolean habilitado; //Indica se a entidade está ativa ou desativada.
 
 }

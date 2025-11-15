@@ -17,11 +17,11 @@ import jakarta.transaction.Transactional;
 @Service
 public class ClienteService {
 
-    @Autowired
+    @Autowired //Injeta automaticamente um objeto (bean) gerenciado pelo Spring em outra classe
     private EmailService emailService;
 
     
-    @Transactional
+    @Transactional //garante integridade do banco
    public Cliente save(Cliente cliente) {
 
        cliente.setHabilitado(Boolean.TRUE);

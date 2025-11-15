@@ -2,6 +2,8 @@ package br.com.ifpe.oxefood.api.cliente;
 
 import java.util.List;
 
+import javax.swing.Spring;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,54 +24,58 @@ import br.com.ifpe.oxefood.modelo.cliente.EnderecoCliente;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
+@RestController // Anotações do Controller: tudo que ela retorna vira json
+@RequestMapping("/api/cliente") // Anotações do Controller: Define o caminho base da API.
+@CrossOrigin // @CrossOrigin: Permite chamadas de outros domínios
 
-@RestController
-@RequestMapping("/api/cliente")
-@CrossOrigin
+// @Tag(...) Usado para documentação do Swagger
 
-@Tag(
-    name = "API Cliente",
-    description = "API responsável pelos servidos de cliente no sistema"
-)
+@Tag(name = "API Cliente", description = "API responsável pelos servidos de cliente no sistema")
 
 public class ClienteController {
-     @Autowired
-    private UsuarioService usuarioService;
 
+    // Injeção de dependência
+    @Autowired
+    private UsuarioService usuarioService; // obtém usuário logado
 
     @Autowired
-    private ClienteService clienteService;
-
+    private ClienteService clienteService; // regras de negócio (salvar, listar, atualizar, excluir cliente etc.)
 
     Operations(
        summary = "Serviço responsável por salvar um cliente no sistema.",
        description = "Exemplo de descrição de um endpoint responsável por inserir um cliente no sistema."
    )
 
+// @RequestBody → pega os dados enviados no corpo da requisição
+// @Valid → valida os campos (Spring Validation)
+// HttpServletRequest → usado para pegar o usuário logado
 
-    @PostMapping
+    @PostMapping // cria novo cliente
     public ResponseEntity<Cliente> save(@RequestBody @Valid ClienteRequest request, HttpServletRequest req) {
- 
 
         Cliente cliente = clienteService.save(request.build(), usuarioService.obterUsuarioLogado(req));
         return new ResponseEntity<Cliente>(cliente, HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping  //Retorna lista de todos os clientes.
     public List<Cliente> listarTodos() {
 
         return clienteService.listarTodos();
     }
 
+
+    //@PathVariable → pega o ID da URL 
+    //Busca um cliente específico.
+
     @GetMapping("/{id}")
     public Cliente obterPorID(@PathVariable Long id) {
-        
+
         return clienteService.obterPorID(id);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Cliente> update(@PathVariable("id") Long id, 
-            @RequestBody @Valid ClienteRequest request , HttpServletRequest req) {
+    @PutMapping("/{id}") //Atualiza os dados do cliente
+    public ResponseEntity<Cliente> update(@PathVariable("id") Long id,
+            @RequestBody @Valid ClienteRequest request, HttpServletRequest req) {
 
         clienteService.update(id, request.build(), usuarioService.obterUsuarioLogado(req));
         return ResponseEntity.ok().build();
@@ -82,20 +88,22 @@ public class ClienteController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/endereco/{clienteId}")
-    public ResponseEntity<EnderecoCliente> adicionarEnderecoCliente(@PathVariable("clienteId") Long clienteId, @RequestBody EnderecoClienteRequest request) {
+    @PostMapping("/endereco/{clienteId}") // um endereço e associa a um cliente.
+    public ResponseEntity<EnderecoCliente> adicionarEnderecoCliente(@PathVariable("clienteId") Long clienteId,
+            @RequestBody EnderecoClienteRequest request) {
 
         EnderecoCliente endereco = clienteService.adicionarEnderecoCliente(clienteId, request.build());
         return new ResponseEntity<EnderecoCliente>(endereco, HttpStatus.CREATED);
     }
 
-    @PutMapping("/endereco/{enderecoId}")
-    public ResponseEntity<EnderecoCliente> atualizarEnderecoCliente(@PathVariable("enderecoId") Long enderecoId, @RequestBody EnderecoClienteRequest request) {
+    @PutMapping("/endereco/{enderecoId}") //Atualiza um endereço pelo ID.
+    public ResponseEntity<EnderecoCliente> atualizarEnderecoCliente(@PathVariable("enderecoId") Long enderecoId,
+            @RequestBody EnderecoClienteRequest request) {
 
         EnderecoCliente endereco = clienteService.atualizarEnderecoCliente(enderecoId, request.build());
         return new ResponseEntity<EnderecoCliente>(endereco, HttpStatus.OK);
     }
-    
+
     @DeleteMapping("/endereco/{enderecoId}")
     public ResponseEntity<Void> removerEnderecoCliente(@PathVariable("enderecoId") Long enderecoId) {
 
@@ -104,3 +112,21 @@ public class ClienteController {
     }
 
 }
+
+
+
+// É um Controller REST do Spring Boot.
+
+// Define endpoints para CRUD de Cliente e CRUD de Endereços.
+
+// Usa ClienteService e UsuarioService para regras de negócio e autenticação.
+
+// Métodos usam POST, GET, PUT, DELETE.
+
+// @Valid garante validações.
+
+// @PathVariable pega dados da URL.
+
+// @RequestBody pega dados do corpo da requisição.
+
+// Retorna ResponseEntity para controlar status HTTP.

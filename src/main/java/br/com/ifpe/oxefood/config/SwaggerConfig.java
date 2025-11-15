@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 
-@Configuration
+@Configuration //anotaçoes da classe
 public class SwaggerConfig {
 
     @Bean
@@ -22,7 +22,7 @@ public class SwaggerConfig {
                                 .email("aluno@discente.ifpe.edu.br")));
     }
 
-    @Bean
+    @Bean //anotaçoes da classe
     public GroupedOpenApi customApi() {
         return GroupedOpenApi.builder()
                 .group("api")
@@ -31,3 +31,9 @@ public class SwaggerConfig {
                 .build();
     }
 }
+
+
+
+// SwaggerConfig é uma classe de configuração do Spring que integra a API com o Swagger/OpenAPI.
+// Permite documentar automaticamente todos os endpoints da aplicação.
+// Facilita testes no Swagger UI sem precisar escrever manualmente toda a documentação
