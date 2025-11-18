@@ -12,12 +12,122 @@
 
 //@Min e @Max : Limites numéricos. @Min(18) @Max(60) private int idade;
 
-//======================
+===========================================================================
 
 // exemplo de converter data: private LocalDateTime dataEntradaSistema;
 
-//==============
+===========================================================================
 
 // A nomenclatura do Spring Data JPA segue o formato:
 // findBy + Campo(s) + Operadores + OrderBy
 // Com base no nome do método, o Spring cria automaticamente a consulta.
+
+==========================================================================
+RELACIONAMENTOS - EXEMPLO
+
+1 OneToMany cria o relacionamento 1 → n.
+
+Classe Empresa
+
+ @OneToMany
+    @JoinColumn(name = "CHAVE ESTRANGEIRA - ID ") 
+    private List<Funcionario> funcionarios;
+
+    public List<Funcionario> getFuncionarios() {
+        return funcionarios;
+    }
+
+    public void setFuncionarios(List<Funcionario> funcionarios) {
+        this.funcionarios = funcionarios;
+    }
+}
+
+======
+Classe Funcionario
+
+import jakarta.persistence.Entity;
+
+@Entity
+public class Funcionario extends EntidadeAuditavel {
+
+}
+//Não colocamos referência para Empresa aqui porque o relacionamento é unidirecional.
+
+=============================================================================
+
+@OneToOne cria o relacionamento 1-1.
+
+CLASSE VENDA 
+
+@Entity
+public class Venda extends EntidadeAuditavel {
+
+    @OneToOne
+    @JoinColumn(name = "nota_fiscal_id")
+    private NotaFiscal notaFiscal;
+
+    public NotaFiscal getNotaFiscal() {
+        return notaFiscal;
+    }
+
+    public void setNotaFiscal(NotaFiscal notaFiscal) {
+        this.notaFiscal = notaFiscal;
+    }
+}
+//--------------------------
+Classe NotaFiscal
+
+@Entity
+public class NotaFiscal extends EntidadeAuditavel {
+
+}
+
+==============================================================================
+BIDIRECIONAL
+
+Classe Empresa (lado 1 → N)
+
+
+@Entity
+public class Empresa extends EntidadeAuditavel {
+
+    @OneToMany(mappedBy = "empresa")
+    private List<Entregador> entregadores;
+
+    public List<Entregador> getEntregadores() {
+        return entregadores;
+    }
+
+    public void setEntregadores(List<Entregador> entregadores) {
+        this.entregadores = entregadores;
+    }
+}
+//============================================
+Classe Entregador (lado N → 1)
+
+
+@Entity
+public class Entregador extends EntidadeAuditavel {
+
+    @ManyToOne
+    @JoinColumn(name = "empresa_id")
+    private Empresa empresa;
+
+    public Empresa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
+    }
+}
+
+Resumo
+
+// Uma Empresa pode ter vários Entregadores.
+
+// Cada Entregador pertence a uma Empresa.
+
+// A chave estrangeira empresa_id fica em Entregador.
+
+// A relação é bidirecional, pois ambos os lados têm referência um ao outro.
