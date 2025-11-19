@@ -22,7 +22,7 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
 /**
- * @author Roberto Alencar
+ * @author 
  * @param <JavaMailSender>
  */
 @Component

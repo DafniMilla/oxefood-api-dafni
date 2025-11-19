@@ -6,13 +6,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+
+//Anotações Lombok
+@Data  //Gera automaticamente: getters e setters , toString, equals e hashCode
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthenticationRequest {
 
-    @NotBlank
+    @NotBlank //Validação Jakarta: O campo não pode estar vazio
     private String username;
 
     @NotBlank

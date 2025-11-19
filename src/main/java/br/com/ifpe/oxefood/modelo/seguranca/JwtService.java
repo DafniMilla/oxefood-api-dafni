@@ -18,6 +18,10 @@ import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
+//Lendo configurações do application.properties
+
+// secret-key → chave secreta usada para assinar o token
+// expiration-time → tempo até o token expirar
 
     @Value("${security.jwt.secret-key}")
     private String secretKey;
@@ -29,6 +33,13 @@ public class JwtService {
         
         return extractClaim(token, Claims::getSubject);
     }
+
+   // Extrair um “claim” genérico (qualquer dado do token)
+// Um claim é um dado gravado no token, como:
+// expiração
+// data de emissão
+// username
+// roles/permissões (se quisesse incluir)
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
 
@@ -51,34 +62,39 @@ public class JwtService {
         return jwtExpiration;
     }
 
+
+    //Método principal de criação do token
        private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long expiration) {
 
         return Jwts
                 .builder()
-                .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-                .compact();
+                .setClaims(extraClaims) //adiciona dados extras
+                .setSubject(userDetails.getUsername()) //grava o username
+                .setIssuedAt(new Date(System.currentTimeMillis())) //data de criação
+                .setExpiration(new Date(System.currentTimeMillis() + expiration)) //data de expiração
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256) //assina com a chave secreta
+                .compact(); //gera o token final
     }
 
+    //Verificar se o token é válido
     public boolean isTokenValid(String token, UserDetails userDetails) {
 
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
-
+//Verificar expiração
     private boolean isTokenExpired(String token) {
 
         return extractExpiration(token).before(new Date());
     }
 
+    //Lê a expiração do token
     private Date extractExpiration(String token) {
 
         return extractClaim(token, Claims::getExpiration);
     }
 
+    //Extrair TODOS os claims do token
     private Claims extractAllClaims(String token) {
 
         return Jwts
@@ -89,6 +105,7 @@ public class JwtService {
                 .getBody();
     }
 
+    //Pegar a chave de assinatura
     private Key getSignInKey() {
 
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);

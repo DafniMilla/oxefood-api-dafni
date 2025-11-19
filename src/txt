@@ -131,3 +131,18 @@ Resumo
 // A chave estrangeira empresa_id fica em Entregador.
 
 // A relação é bidirecional, pois ambos os lados têm referência um ao outro.
+
+============================================================================================
+Spring	
+
+
+Fornece anotações para criar APIs, serviços e componentes do Spring
+
+Focado no comportamento da aplicação
+Exemplo: @RestController, @Service
+
+
+Jakarta
+Fornece anotações padrão Java EE para validação e entidades
+Focado nos dados e regras de validação
+Exemplo: @NotBlank, @Entity

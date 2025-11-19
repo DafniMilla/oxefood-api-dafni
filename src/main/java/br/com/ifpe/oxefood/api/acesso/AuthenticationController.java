@@ -13,14 +13,15 @@ import br.com.ifpe.oxefood.modelo.acesso.Usuario;
 import br.com.ifpe.oxefood.modelo.acesso.UsuarioService;
 import br.com.ifpe.oxefood.modelo.seguranca.JwtService;
 
-@RestController
+@RestController //Indica que essa classe é um controlador REST — ela recebe requisições HTTP e devolve respostas em formato JSON.
 @RequestMapping("/api/auth")
-@CrossOrigin
+@CrossOrigin //Permite requisições vindas de outro domínio
 public class AuthenticationController {
 
-    private final JwtService jwtService;
+    //Atributos (injeção de dependência)
+    private final JwtService jwtService; //responsável por gerar tokens JWT
     
-    private UsuarioService usuarioService;
+    private UsuarioService usuarioService; //responsável por validar o usuário e senha.
 
     public AuthenticationController(JwtService jwtService, UsuarioService usuarioService) {
 
@@ -31,10 +32,11 @@ public class AuthenticationController {
     @PostMapping
     public Map<Object, Object> signin(@RequestBody AuthenticationRequest data) {
     
-        Usuario authenticatedUser = usuarioService.authenticate(data.getUsername(), data.getPassword());
+        Usuario authenticatedUser = usuarioService.authenticate(data.getUsername(), data.getPassword());  //Autentica o usuário
 
-        String jwtToken = jwtService.generateToken(authenticatedUser);
+        String jwtToken = jwtService.generateToken(authenticatedUser); //Gera o token JWT
 
+        //Monta a resposta
         Map<Object, Object> loginResponse = new HashMap<>();
         loginResponse.put("username", authenticatedUser.getUsername());
         loginResponse.put("token", jwtToken);

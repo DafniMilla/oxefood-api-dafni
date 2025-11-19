@@ -20,6 +20,7 @@ import br.com.ifpe.oxefood.modelo.entregador.Entregador;
 import br.com.ifpe.oxefood.modelo.entregador.EntregadorService;
 import jakarta.validation.Valid;
 
+//Anotações do Spring
 @RestController
 @RequestMapping("/api/entregador")
 @CrossOrigin
