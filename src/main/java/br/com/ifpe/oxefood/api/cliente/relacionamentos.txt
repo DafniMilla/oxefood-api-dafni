@@ -1,0 +1,187 @@
+//===1-para-N (um para muitos), unidirecional======
+
+
+import jakarta.persistence.*;
+import java.util.List;
+
+@Entity
+public class Empresa extends EntidadeAuditavel {
+
+    @OneToMany
+    @JoinColumn(name = "empresa_id") 
+    private List<Funcionario> funcionarios;
+
+    public List<Funcionario> getFuncionarios() {
+        return funcionarios;
+    }
+
+    public void setFuncionarios(List<Funcionario> funcionarios) {
+        this.funcionarios = funcionarios;
+    }
+}
+
+======================//
+
+import jakarta.persistence.Entity;
+
+@Entity
+public class Funcionario extends EntidadeAuditavel {
+
+    private String nome;
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+}
+====================================================================================================================
+Relacionamento 1 – 1 (um para um), unidirecional
+
+import jakarta.persistence.*;
+
+@Entity
+public class Venda extends EntidadeAuditavel {
+
+    @OneToOne
+    @JoinColumn(name = "nota_fiscal_id")
+    private NotaFiscal notaFiscal;
+
+    public NotaFiscal getNotaFiscal() {
+        return notaFiscal;
+    }
+
+    public void setNotaFiscal(NotaFiscal notaFiscal) {
+        this.notaFiscal = notaFiscal;
+    }
+}
+====================//
+import jakarta.persistence.Entity;
+
+@Entity
+public class NotaFiscal extends EntidadeAuditavel {
+
+    private String numero;
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+}
+O que acontece no banco
+📌 Tabela venda
+
+id
+
+nota_fiscal_id (FK)
+
+📌 Tabela nota_fiscal
+
+id
+
+numero
+
+✔ Relacionamento 1–1
+✔ Unidirecional
+✔ FK fica em Venda
+
+c) Relacionamento 1 – N (um para muitos), bidirecional
+Como o enunciado cortou o final, vou usar o exemplo clássico de aula:
+
+👉 Cliente (1) ⟷ Pedido (N)
+(Se quiser, depois eu adapto para os nomes corretos.)
+
+Classe Cliente (lado 1)
+java
+Copiar código
+import jakarta.persistence.*;
+import java.util.List;
+
+@Entity
+public class Cliente extends EntidadeAuditavel {
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Pedido> pedidos;
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
+}
+Classe Pedido (lado N)
+java
+Copiar código
+import jakarta.persistence.*;
+
+@Entity
+public class Pedido extends EntidadeAuditavel {
+
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+}
+
+
+=====================================================================================
+Relacionamento 1 – N (um para muitos), bidirecional
+
+import jakarta.persistence.*;
+import java.util.List;
+
+@Entity
+public class Cliente extends EntidadeAuditavel {
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Pedido> pedidos;
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
+}
+
+===============//
+import jakarta.persistence.*;
+
+@Entity
+public class Pedido extends EntidadeAuditavel {
+
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+}
+
+======================================================================================================
+
+@OneToOne → define 1:1
+One-to-Many (1:N) – Um para Muitos
+One-to-Many Bidirecional (1:N) – Um para Muitos
+Many-to-One (N:1) – Muitos para Um
+Many-to-Many (N:N) – Muitos para Muitos

@@ -146,3 +146,18 @@ Jakarta
 Fornece anotações padrão Java EE para validação e entidades
 Focado nos dados e regras de validação
 Exemplo: @NotBlank, @Entity
+
+
+
+===================================================================================================================================================================================================================
+O arquivo docker-compose.yml serve para definir, configurar e executar múltiplos containers Docker de forma integrada, usando um único comando.
+
+Em termos simples
+
+Ele descreve quais serviços sua aplicação precisa, como eles se conectam e como devem ser executados (imagens, portas, volumes, variáveis de ambiente etc.).
+
+
+==========================================================================================================================================
+
+O pom.xml serve para gerenciar todo o projeto Java usando o Maven.
+Ele é o arquivo central de configuração do Maven e define como o projeto é construído, quais dependências ele usa e como ele é empacotado.
