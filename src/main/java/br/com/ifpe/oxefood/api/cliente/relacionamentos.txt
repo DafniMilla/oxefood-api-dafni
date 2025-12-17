@@ -185,3 +185,18 @@ One-to-Many (1:N) – Um para Muitos
 One-to-Many Bidirecional (1:N) – Um para Muitos
 Many-to-One (N:1) – Muitos para Um
 Many-to-Many (N:N) – Muitos para Muitos
+
+
+
+
+
+
+
+
+
+=========================================================
+ANOTAÇOES
+
+No Spring Boot, quando você tem uma classe de Request (DTO) com atributos do tipo LocalDateTime e quer definir o formato da string esperada na requisição, você usa a anotação:
+
+@DateTimeFormat
