@@ -1,0 +1,253 @@
+a) Relacionamento 1–N bidirecional entre Professor e Turma
+@Entity
+@Table(name = "Professor")
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Professor {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+
+    @Column
+    private String nome;
+
+    @Column
+    private String email;
+
+    @Column
+    private String titulacao;
+
+    @Column
+    private LocalDate dataAdmissao;
+
+    @OneToMany(mappedBy = "professor")
+    private List<Turma> turmas;
+}
+
+@Entity
+@Table(name = "Turma")
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Turma {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+
+    @Column
+    private String nome;
+
+    @Column
+    private String turno;
+
+    @Column
+    private String sala;
+
+    @Column
+    private Integer periodoCurso;
+
+    @ManyToOne
+    @JoinColumn(name = "professor_id")
+    private Professor professor;
+}
+
+b) Validações de banco de dados
+@Entity
+@Table(name = "Professor")
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Professor {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+
+    @Column(nullable = false)
+    private String nome;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column
+    private String titulacao;
+
+    @Column
+    private LocalDate dataAdmissao;
+
+    @OneToMany(mappedBy = "professor")
+    private List<Turma> turmas;
+}
+
+@Entity
+@Table(name = "Turma")
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Turma {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+
+    @Column(nullable = false)
+    private String nome;
+
+    @Column
+    private String turno;
+
+    @Column
+    private String sala;
+
+    @Column
+    private Integer periodoCurso;
+
+    @ManyToOne
+    @JoinColumn(name = "professor_id")
+    private Professor professor;
+}
+
+c) Consultas (Repository)
+
+Buscar todas as turmas de um professor
+
+List<Turma> findByProfessorId(Long professorId);
+
+
+Buscar professores por nome ou email (ignora maiúsculas/minúsculas, busca aproximada, ordenado por nome)
+
+List<Professor> findByNomeIgnoreCaseContainingOrEmailIgnoreCaseContainingOrderByNomeAsc(
+    String nome, String email
+);
+
+d) Acesso público para alterar Professor
+.authorizeHttpRequests(authorize -> authorize
+    .requestMatchers(HttpMethod.PUT, "/professores/**").permitAll()
+    .anyRequest().authenticated()
+)
+
+02)
+a) Relacionamento 1–1 unidirecional (Pagamento → Pedido)
+@Entity
+@Table(name = "Pagamento")
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Pagamento {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+
+    @Column
+    private String tipo;
+
+    @Column
+    private LocalDate dataPagamento;
+
+    @Column
+    private Double valor;
+
+    @OneToOne
+    @JoinColumn(name = "pedido_id")
+    private Pedido pedido;
+}
+
+b) Classe PagamentoRequest com validações
+public class PagamentoRequest {
+
+    @NotBlank
+    private String tipo;
+
+    @NotNull
+    private Double valor;
+
+    @PastOrPresent
+    private LocalDate dataPagamento;
+}
+
+c) Consultas (Repository)
+
+Buscar pedidos pelo número (case insensitive, aproximado)
+
+List<Pedido> findByNumeroIgnoreCaseContaining(String numero);
+
+
+Buscar pedidos com valor entre 5.000 e 50.000 ordenados por data decrescente
+
+List<Pedido> findByValorTotalBetweenOrderByDataPedidoDesc(
+    Double valorInicial, Double valorFinal
+);
+
+d) Apenas ADMIN pode excluir pedido
+.authorizeHttpRequests(authorize -> authorize
+    .requestMatchers(HttpMethod.DELETE, "/pedidos/**").hasRole("ADMIN")
+    .anyRequest().authenticated()
+)
+
+03) Controle de acesso com roles, Spring Security e JWT
+
+O controle de acesso no projeto é baseado em perfis (roles) atribuídos aos usuários, como USER e ADMIN.
+O Spring Security intercepta as requisições HTTP e verifica se o usuário está autenticado e se possui a role necessária para acessar determinado endpoint.
+
+O JWT (JSON Web Token) é utilizado para autenticação stateless. Após o login, o servidor gera um token contendo as informações do usuário e suas roles. Esse token é enviado nas requisições seguintes no header Authorization.
+O filtro JWT valida o token e carrega as permissões do usuário no contexto de segurança, permitindo ou bloqueando o acesso conforme as regras configuradas.
+
+04) Envio de e-mail de cadastro de Professor
+public void enviarEmailCadastroProfessor(Professor professor) {
+
+    String assuntoEmail = "Cadastro realizado com sucesso";
+
+    Context params = new Context();
+    params.setVariable("nomeProfessor", professor.getNome());
+    params.setVariable("emailProfessor", professor.getEmail());
+    params.setVariable("titulacao", professor.getTitulacao());
+
+    this.sendMailTemplate(
+        "cadastro_professor.html",
+        professor.getEmail(),
+        assuntoEmail,
+        params
+    );
+}
+
+05) Documentação da API REST
+
+A biblioteca utilizada foi o Springdoc OpenAPI (Swagger).
+
+Exemplo em Controller:
+
+@Operation(summary = "Buscar professor por ID")
+@ApiResponses({
+    @ApiResponse(responseCode = "200", description = "Professor encontrado"),
+    @ApiResponse(responseCode = "404", description = "Professor não encontrado")
+})
+@GetMapping("/{id}")
+public ResponseEntity<Professor> buscarPorId(@PathVariable Long id) {
+    return ResponseEntity.ok(service.buscarPorId(id));
+}
+
+
+Essa documentação gera automaticamente uma interface gráfica acessível pelo navegador, facilitando testes e entendimento da API.
+
+06)
+a) Para que serve o arquivo .env
+
+O arquivo .env serve para armazenar variáveis de ambiente, como credenciais de banco, chaves JWT e configurações sensíveis.
+A principal vantagem é segurança e flexibilidade, evitando dados sensíveis no código-fonte e permitindo diferentes configurações por ambiente (dev, test, prod).
+
+b) Configuração para uso do .env
+spring.config.import=optional:file:.env
