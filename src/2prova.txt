@@ -206,6 +206,9 @@ O Spring Security intercepta as requisições HTTP e verifica se o usuário est�
 O JWT (JSON Web Token) é utilizado para autenticação stateless. Após o login, o servidor gera um token contendo as informações do usuário e suas roles. Esse token é enviado nas requisições seguintes no header Authorization.
 O filtro JWT valida o token e carrega as permissões do usuário no contexto de segurança, permitindo ou bloqueando o acesso conforme as regras configuradas.
 
+
+
+
 04) Envio de e-mail de cadastro de Professor
 public void enviarEmailCadastroProfessor(Professor professor) {
 
@@ -223,6 +226,9 @@ public void enviarEmailCadastroProfessor(Professor professor) {
         params
     );
 }
+
+
+
 
 05) Documentação da API REST
 

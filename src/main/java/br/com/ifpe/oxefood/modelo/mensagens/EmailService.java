@@ -124,3 +124,6 @@ public class EmailService {
         return mailSender;
     }
 }
+
+
+// Essa classe é responsável por enviar e-mails HTML usando Thymeleaf e SMTP, com envio assíncrono no Spring Boot, utilizando configurações externas do application.properties.

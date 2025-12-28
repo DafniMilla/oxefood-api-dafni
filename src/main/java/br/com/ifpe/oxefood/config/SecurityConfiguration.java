@@ -104,3 +104,9 @@ public class SecurityConfiguration {
                 return source;
         }
 }
+
+// O pacote config centraliza configurações globais da aplicação, como beans, segurança, CORS e integrações.
+
+
+
+// A organização em pacotes separa responsabilidades, facilitando manutenção, testes e escalabilidade da aplicação. O pacote api trata requisições, modelo representa os dados, config centraliza configurações e util reúne classes auxiliares.

@@ -13,6 +13,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+
 //Anotações da classe
 @Getter //do lombok 
 @Setter //lombok

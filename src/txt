@@ -161,3 +161,19 @@ Ele descreve quais serviços sua aplicação precisa, como eles se conectam e co
 
 O pom.xml serve para gerenciar todo o projeto Java usando o Maven.
 Ele é o arquivo central de configuração do Maven e define como o projeto é construído, quais dependências ele usa e como ele é empacotado.
+
+
+
+PASTA CONFIG 
+A pasta config é utilizada para organizar as classes de configuração da aplicação.
+Nela ficam definições como segurança, CORS, JWT, Swagger, beans e outras
+configurações globais que são carregadas pelo Spring no início da aplicação.
+
+
+
+
+
+
+
+Configuração do Swagger
+Documentação da API REST

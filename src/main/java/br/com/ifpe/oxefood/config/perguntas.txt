@@ -1,0 +1,122 @@
+1. Para que serve src/main/java?
+→ Contém o código-fonte principal da aplicação Java.
+
+2. Para que serve src/main/resources?
+→ Armazena arquivos de configuração e recursos, como application.properties, templates e arquivos estáticos.
+
+3. Diferença entre src/main/java e src/test/java?
+→ main contém o código da aplicação; test contém os testes automatizados.
+
+4. Por que o pacote começa com br.com.ifpe.oxefood?
+→ Segue o padrão de nomes de pacotes Java usando domínio invertido para evitar conflitos.
+
+5. O que acontece se a classe principal não estiver no pacote raiz?
+→ O Spring pode não escanear corretamente os componentes da aplicação.
+
+🚀 Classe principal
+
+6. Função da OxefoodApiDafniApplication.java?
+→ Inicializar e executar a aplicação Spring Boot.
+
+7. O que faz @SpringBootApplication?
+→ Combina @Configuration, @EnableAutoConfiguration e @ComponentScan.
+
+8. Por que a classe principal fica no pacote raiz?
+→ Para permitir que o Spring encontre todos os componentes automaticamente.
+
+9. O que acontece ao executar o método main?
+→ O Spring Boot inicia o servidor e carrega o contexto da aplicação.
+
+📦 Pacotes internos
+🔹 api
+
+10. O que fica no pacote api?
+→ Controllers responsáveis por receber requisições HTTP.
+
+11. Anotação comum nesse pacote?
+→ @RestController.
+
+12. Diferença entre @Controller e @RestController?
+→ @RestController retorna dados (JSON); @Controller retorna páginas.
+
+🔹 modelo
+
+13. O que representa o pacote modelo?
+→ As entidades do sistema.
+
+14. Anotações comuns no modelo?
+→ @Entity, @Id, @GeneratedValue.
+
+15. Relação com o banco de dados?
+→ Cada classe representa uma tabela do banco.
+
+🔹 config
+
+16. Para que serve o pacote config?
+→ Centralizar configurações globais da aplicação.
+
+17. O que pode existir nesse pacote?
+→ Configuração de segurança, CORS, email, Swagger e beans.
+
+18. Anotação usada em classes de configuração?
+→ @Configuration.
+
+19. Diferença entre @Configuration e @Component?
+→ @Configuration define classes de configuração; @Component registra beans genéricos.
+
+🔹 util
+
+20. Função do pacote util?
+→ Guardar classes utilitárias e auxiliares.
+
+21. Por que não colocar regra de negócio em util?
+→ Para manter organização e separação de responsabilidades.
+
+22. Exemplos de classes em util?
+→ Validações, conversores e helpers.
+
+🧪 Testes
+
+23. Para que serve src/test/java?
+→ Criar testes automatizados da aplicação.
+
+24. Framework de testes padrão do Spring Boot?
+→ JUnit.
+
+25. Função de @SpringBootTest?
+→ Carregar o contexto completo da aplicação para testes.
+
+📄 Arquivos importantes
+
+26. Para que serve o pom.xml?
+→ Gerenciar dependências e configuração do projeto Maven.
+
+27. Função da pasta target?
+→ Armazena os arquivos gerados na compilação.
+
+28. O que faz o .gitignore?
+→ Define arquivos que não devem ser versionados.
+
+29. Para que serve o docker-compose.yml?
+→ Orquestrar serviços com Docker.
+
+30. Função do .env.template?
+→ Exemplo de variáveis de ambiente.
+
+🔥 Perguntas finais (clássicas de prova)
+
+31. A pasta util é obrigatória?
+→ Não, ela é opcional.
+
+32. O Spring reconhece automaticamente todos os pacotes?
+→ Apenas os que estão abaixo do pacote principal.
+
+33. O que acontece se uma entidade estiver fora do pacote base?
+→ O Spring não a detecta automaticamente.
+
+34. Por que organizar bem os pacotes?
+→ Facilita manutenção, testes e entendimento do sistema.
+
+✍️ Resposta discursiva pronta
+
+Um projeto Spring Boot é organizado em pacotes para separar responsabilidades. O pacote api trata as requisições, modelo representa os dados, config centraliza configurações e util contém funções auxiliares, tornando o sistema mais organizado e fácil de manter.
