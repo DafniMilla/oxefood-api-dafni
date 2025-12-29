@@ -1,0 +1,29 @@
+Relacionamento 1–1 (OneToOne) unidirecional
+
+Unidirecional
+
+Só uma classe conhece a outra
+
+No exemplo:
+
+Pagamento conhece Pedido
+
+Pedido NÃO conhece Pagamento
+
+Onde fica a chave estrangeira?
+
+Fica na classe que possui o relacionamento
+
+Aqui: na tabela Pagamento
+========================================
+@OneToOne
+@JoinColumn(name = "pedido_id")
+private Pedido pedido;
+===============================================
+Anotações importantes
+
+@OneToOne → define relacionamento 1–1
+
+@JoinColumn → cria a FK no banco
+
+Sem mappedBy → relacionamento unidirecional

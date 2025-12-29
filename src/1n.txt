@@ -1,0 +1,16 @@
+Relacionamento BIDIRECIONAL  1-n
+
+As duas classes se conhecem
+
+Classe Pedido (lado 1)
+
+@OneToMany(mappedBy = "pedido")
+private List<Item> itens;
+
+Classe Item (lado N)
+@ManyToOne
+@JoinColumn(name = "pedido_id")
+private Pedido pedido;
+
+
+mappedBy: Diz quem é o dono do relacionamento

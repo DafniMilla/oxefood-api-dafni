@@ -1,0 +1,16 @@
+Implementação BIDIRECIONAL
+
+Classe Professor (dono do relacionamento)
+@ManyToMany
+@JoinTable(
+    name = "professor_turma",
+    joinColumns = @JoinColumn(name = "professor_id"),
+    inverseJoinColumns = @JoinColumn(name = "turma_id")
+)
+private List<Turma> turmas;
+
+=========================
+
+Classe Turma (lado inverso)
+@ManyToMany(mappedBy = "turmas")
+private List<Professor> professores;
