@@ -1,16 +1,29 @@
 Relacionamento BIDIRECIONAL  1-n
-
 As duas classes se conhecem
 
 Classe Pedido (lado 1)
 
 @OneToMany(mappedBy = "pedido")
 private List<Item> itens;
+===================
 
-Classe Item (lado N)
+Classe Item (lado N) dona do relacionamento
 @ManyToOne
 @JoinColumn(name = "pedido_id")
 private Pedido pedido;
 
 
 mappedBy: Diz quem é o dono do relacionamento
+
+Em um relacionamento bidirecional 1 para N, as duas classes são modificadas, porém apenas a classe do lado N é a dona do relacionamento, sendo responsável pela chave estrangeira. A classe do lado 1 utiliza o atributo mappedBy.
+===================================================================================================================================================================================================
+
+1 → N unidirecional
+Só um lado conhece o outro
+
+
+EXEMPLO: 
+
+@OneToMany
+@JoinColumn(name = "professor_id")
+private List<Disciplina> disciplinas;

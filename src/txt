@@ -23,114 +23,32 @@
 // Com base no nome do método, o Spring cria automaticamente a consulta.
 
 ==========================================================================
-RELACIONAMENTOS - EXEMPLO
 
-1 OneToMany cria o relacionamento 1 → n.
 
-Classe Empresa
+=======HERANÇA=======
 
- @OneToMany
-    @JoinColumn(name = "CHAVE ESTRANGEIRA - ID ") 
-    private List<Funcionario> funcionarios;
+public class Pessoa {
 
-    public List<Funcionario> getFuncionarios() {
-        return funcionarios;
-    }
+    @Id
+    @GeneratedValue
+    private Long id;
 
-    public void setFuncionarios(List<Funcionario> funcionarios) {
-        this.funcionarios = funcionarios;
-    }
+    private String nome;
 }
-
-======
-Classe Funcionario
-
-import jakarta.persistence.Entity;
-
+java
+Copiar código
 @Entity
-public class Funcionario extends EntidadeAuditavel {
-
-}
-//Não colocamos referência para Empresa aqui porque o relacionamento é unidirecional.
-
-=============================================================================
-
-@OneToOne cria o relacionamento 1-1.
-
-CLASSE VENDA 
-
-@Entity
-public class Venda extends EntidadeAuditavel {
-
-    @OneToOne
-    @JoinColumn(name = "nota_fiscal_id")
-    private NotaFiscal notaFiscal;
-
-    public NotaFiscal getNotaFiscal() {
-        return notaFiscal;
-    }
-
-    public void setNotaFiscal(NotaFiscal notaFiscal) {
-        this.notaFiscal = notaFiscal;
-    }
-}
-//--------------------------
-Classe NotaFiscal
-
-@Entity
-public class NotaFiscal extends EntidadeAuditavel {
-
+public class Aluno extends Pessoa {
+    private String matricula;
 }
 
-==============================================================================
-BIDIRECIONAL
 
-Classe Empresa (lado 1 → N)
-
-
-@Entity
-public class Empresa extends EntidadeAuditavel {
-
-    @OneToMany(mappedBy = "empresa")
-    private List<Entregador> entregadores;
-
-    public List<Entregador> getEntregadores() {
-        return entregadores;
-    }
-
-    public void setEntregadores(List<Entregador> entregadores) {
-        this.entregadores = entregadores;
-    }
-}
-//============================================
-Classe Entregador (lado N → 1)
+// Herança em Java permite que uma classe herde atributos
+//  e métodos de outra, representando uma relação do tipo “é um”.
+//   A classe filha estende a classe pai por meio da palavra-chave extends, 
+//   podendo sobrescrever métodos e aplicar polimorfismo.
 
 
-@Entity
-public class Entregador extends EntidadeAuditavel {
-
-    @ManyToOne
-    @JoinColumn(name = "empresa_id")
-    private Empresa empresa;
-
-    public Empresa getEmpresa() {
-        return empresa;
-    }
-
-    public void setEmpresa(Empresa empresa) {
-        this.empresa = empresa;
-    }
-}
-
-Resumo
-
-// Uma Empresa pode ter vários Entregadores.
-
-// Cada Entregador pertence a uma Empresa.
-
-// A chave estrangeira empresa_id fica em Entregador.
-
-// A relação é bidirecional, pois ambos os lados têm referência um ao outro.
 
 ============================================================================================
 Spring	
@@ -176,4 +94,14 @@ configurações globais que são carregadas pelo Spring no início da aplicaçã
 
 
 Configuração do Swagger
-Documentação da API REST
+Swagger é uma ferramenta utilizada para documentar APIs REST automaticamente.
+Ele gera uma interface gráfica onde é possível:
+
+visualizar todos os endpoints da API
+
+testar requisições (GET, POST, PUT, DELETE)
+
+ver parâmetros, respostas e códigos HTTP
+
+Atualmente, no Spring Boot, ele é usado através do Springdoc OpenAPI.
+

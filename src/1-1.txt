@@ -4,24 +4,24 @@ Unidirecional
 
 Só uma classe conhece a outra
 
-No exemplo:
-
-Pagamento conhece Pedido
-
-Pedido NÃO conhece Pagamento
-
-Onde fica a chave estrangeira?
-
-Fica na classe que possui o relacionamento
-
-Aqui: na tabela Pagamento
 ========================================
 @OneToOne
 @JoinColumn(name = "pedido_id")
 private Pedido pedido;
 ===============================================
-Anotações importantes
 
+
+REGRA DE OURO (decide em 10 segundos)
+
+👉 Leia o enunciado e transforme em frase simples:
+
+“QUEM TEM QUEM?”
+
+A classe que TEM outra é a que guarda a referência
+👉 é nela que você coloca o relacionamento
+
+
+============================================================
 @OneToOne → define relacionamento 1–1
 
 @JoinColumn → cria a FK no banco
