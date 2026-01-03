@@ -1,0 +1,38 @@
+// Buscar pedidos pelo número, ignorando maiúsculas/minúsculas
+// e permitindo busca aproximada
+
+    @Query("SELECT p FROM Pedido p WHERE LOWER(p.numero) LIKE LOWER(CONCAT('%', :numero, '%'))")
+    List<Pedido> consultarPorNumero(String numero);
+
+
+    // Consulta 2:
+    // Retornar pedidos com valor total entre 5.000 e 50.000
+    // ordenados pela data do pedido em ordem decrescente
+
+    @Query("SELECT p FROM Pedido p WHERE p.valorTotal BETWEEN 500 AND 5000 ORDER BY p.dataPedido DESC")
+    List<Pedido> consultarPorValorTotal(int valormin, int valormax);
+
+
+//Buscar por nome exato
+
+@Query("SELECT p FROM Pessoa p WHERE p.nome = :nome")
+List<Pessoa> buscarPorNome(String nome);
+
+
+//Buscar por nome ou sobrenome (OR)
+
+@Query("SELECT p FROM Pessoa p WHERE p.nome = :nome OR p.sobrenome = :sobrenome")
+List<Pessoa> buscarPorNomeOuSobrenome(String nome, String sobrenome);
+
+
+
+//Buscar por nome terminando com letra específica
+
+@Query("SELECT p FROM Pessoa p WHERE LOWER(p.nome) LIKE LOWER(CONCAT('%', :letra))")
+List<Pessoa> buscarPorNomeFinal(String letra);
+
+
+//Buscar por nome e ordenar em ordem alfabética
+
+@Query("SELECT p FROM Pessoa p WHERE p.nome IS NOT NULL ORDER BY p.nome ASC")
+List<Pessoa> listarOrdenadoPorNome();

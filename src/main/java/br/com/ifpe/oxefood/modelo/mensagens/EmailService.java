@@ -127,3 +127,22 @@ public class EmailService {
 
 
 // Essa classe é responsável por enviar e-mails HTML usando Thymeleaf e SMTP, com envio assíncrono no Spring Boot, utilizando configurações externas do application.properties.
+
+
+
+// public void enviarEmailCadastroProfessor(Professor professor) {
+
+//     String assuntoEmail = "Cadastro realizado com sucesso";
+
+//     Context params = new Context();
+//     params.setVariable("nomeProfessor", professor.getNome());
+//     params.setVariable("emailProfessor", professor.getEmail());
+//     params.setVariable("titulacao", professor.getTitulacao());
+
+//     this.sendMailTemplate(
+//         "cadastro_professor.html",
+//         professor.getCarro().getProprietario().getEmail(), ========aqui fica a mudança============
+//         assuntoEmail,
+//         params
+//     );
+// }

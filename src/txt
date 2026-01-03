@@ -105,3 +105,10 @@ ver parâmetros, respostas e códigos HTTP
 
 Atualmente, no Spring Boot, ele é usado através do Springdoc OpenAPI.
 
+
+
+Maven é uma ferramenta de automação e gerenciamento de projetos Java.
+Ele serve para:
+Gerenciar dependências (bibliotecas do projeto)
+Organizar a estrutura do projeto
+Automatizar o build (compilar, testar e empacotar)
